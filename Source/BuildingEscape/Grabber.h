@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
 
 
@@ -15,6 +16,8 @@ class BUILDINGESCAPE_API UGrabber : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UGrabber();
+	FVector GetPlayerReachLineEnd();
+	FVector GetPlayerReachLineStart();
 
 protected:
 	// Called when the game starts
@@ -27,6 +30,20 @@ public:
 private:
 
 	float reach = 100.0f;
-		
+	UPhysicsHandleComponent* physicsHandle = nullptr;
+	UInputComponent* inputComponent = nullptr;
 	
+	/// Ray-cast and grab what is in reach
+	void Grab();
+
+	void Release();
+
+	// Find (assumed) attached physics handler
+	void FindPhysicsHandleComponent();
+
+	// Setup (assumed) attached input component
+	void SetupAttachedInputComponent();
+
+	// Return hit for first physics body in reach
+	const FHitResult GetFirstPhysicsBodyInReach();
 };
